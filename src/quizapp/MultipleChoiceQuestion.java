@@ -48,10 +48,7 @@ public class MultipleChoiceQuestion extends Question {
 			int choice=-1;
 			answer=answer.trim().toUpperCase();
 			
-			if(answer.equals('A')) {
-				choice=0;
-				
-			}
+			
 			if(answer.equals("A")) {
 				choice=0;
 			}

@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
+
 /**
  * Bir quiz oturumunu yöneten sınıf.
  * 
@@ -55,7 +56,7 @@ public class Quiz implements Gradable {
      * Bu metot herhangi bir puan hesaplaması yapmaz;
      * puan hesaplamak için {@link #calculateScore()} metodu çağrılmalıdır.
 	 */
-	public void Start() {
+	public void start() {
 		Scanner input=new Scanner(System.in);
 		System.out.println(student.getName()+" Hazırsanız ENTER’a basın, quiz başlasın!");
 		input.nextLine();

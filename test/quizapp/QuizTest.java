@@ -2,8 +2,10 @@ package quizapp;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,96 +13,114 @@ import org.junit.jupiter.api.Test;
 
 class QuizTest {
 
-    // Quiz içindeki private userAnswers alanına erişmek için yardımcı metot
-    @SuppressWarnings("unchecked")
-    private List<String> getUserAnswersList(Quiz quiz) throws Exception {
-        Field uaField = Quiz.class.getDeclaredField("userAnswers");
-        uaField.setAccessible(true);
-        return (List<String>) uaField.get(quiz);
-    }
-
+    // -------------------------------------------------------------
+    // 1) TÜM CEVAPLAR DOĞRU → Skor 30 olmalı
+    // -------------------------------------------------------------
     @Test
-    void testCalculateScore_allCorrect() throws Exception {
-        // 1) Test verilerini hazırla
-        Student student = new Student("Test Öğrencisi");
+    void testCalculateScore_allCorrect() {
 
-        List<String> opts1 = Arrays.asList("A", "B", "C", "D");
-        Question q1 = new MultipleChoiceQuestion("Soru1", 1, opts1, 0); // doğru: A
+        Student student = new Student("Test");
 
-        Question q2 = new TrueFalseQuestion("Soru2", 2, true); // doğru: evet
-
+        List<String> opts = Arrays.asList("A", "B", "C", "D");
+        Question q1 = new MultipleChoiceQuestion("S1", 1, opts, 0);   // doğru: A
+        Question q2 = new TrueFalseQuestion("S2", 2, true);           // doğru: evet
         List<Question> questions = Arrays.asList(q1, q2);
 
-        // Quiz oluştur (shuffle = false, userAnswers parametresi kullanılmıyor zaten)
-        Quiz quiz = new Quiz(questions, student, false, new ArrayList<String>());
+        Quiz quiz = new Quiz(questions, student, false, null);
 
-        // 2) Kullanıcının doğru cevaplarını userAnswers listesine ekle
-        List<String> userAnswers = getUserAnswersList(quiz);
-        userAnswers.add("A");     // q1 için doğru cevap
-        userAnswers.add("evet");  // q2 için doğru cevap
+        // Sahte kullanıcı girişleri:
+        // ENTER → A → evet
+        String fakeInput = "\nA\nevet\n";
 
-        // 3) Puanı hesapla
-        int score = quiz.calculateScore();
+        InputStream originalIn = System.in;
 
-        // 4) Beklenen skor:
-        // q1: difficulty 1 -> 10 * 1 = 10
-        // q2: difficulty 2 -> 10 * 2 = 20
-        // Toplam = 30
-        assertEquals(30, score);
-        assertEquals(30, student.getScore());
+        try {
+            System.setIn(new ByteArrayInputStream(fakeInput.getBytes()));
+
+            quiz.start();                // Cevapları userAnswers'a doldurur
+            int score = quiz.calculateScore();
+
+            assertEquals(30, score);
+            assertEquals(30, student.getScore());
+
+        } finally {
+            System.setIn(originalIn);
+        }
     }
 
+    // -------------------------------------------------------------
+    // 2) TÜM CEVAPLAR YANLIŞ → Skor 0 olmalı
+    // -------------------------------------------------------------
     @Test
-    void testCalculateScore_allWrong() throws Exception {
-        Student student = new Student("Test Öğrencisi");
+    void testCalculateScore_allWrong() {
 
-        List<String> opts1 = Arrays.asList("A", "B", "C", "D");
-        Question q1 = new MultipleChoiceQuestion("Soru1", 1, opts1, 0); // doğru: A
+        Student student = new Student("Test");
 
-        Question q2 = new TrueFalseQuestion("Soru2", 2, true); // doğru: evet
-
+        List<String> opts = Arrays.asList("A", "B", "C", "D");
+        Question q1 = new MultipleChoiceQuestion("S1", 1, opts, 0);   // doğru: A
+        Question q2 = new TrueFalseQuestion("S2", 2, true);           // doğru: evet
         List<Question> questions = Arrays.asList(q1, q2);
 
-        Quiz quiz = new Quiz(questions, student, false, new ArrayList<String>());
+        Quiz quiz = new Quiz(questions, student, false, null);
 
-        // Yanlış cevapları ekle
-        List<String> userAnswers = getUserAnswersList(quiz);
-        userAnswers.add("B");      // yanlış
-        userAnswers.add("hayır");  // yanlış
+        // Sahte giriş:
+        // ENTER → B → hayır
+        String fakeInput = "\nB\nhayır\n";
 
-        int score = quiz.calculateScore();
+        InputStream originalIn = System.in;
 
-        assertEquals(0, score);
-        assertEquals(0, student.getScore());
+        try {
+            System.setIn(new ByteArrayInputStream(fakeInput.getBytes()));
+
+            quiz.start();
+            int score = quiz.calculateScore();
+
+            assertEquals(0, score);
+            assertEquals(0, student.getScore());
+
+        } finally {
+            System.setIn(originalIn);
+        }
     }
 
+    // -------------------------------------------------------------
+    // 3) showResult çıktısı doğru mu?
+    // -------------------------------------------------------------
     @Test
-    void testShowResult_printsCorrectMessage() throws Exception {
-        Student student = new Student("Test Öğrencisi");
+    void testShowResult_printsCorrectMessage() {
 
-        List<String> opts1 = Arrays.asList("A", "B", "C", "D");
-        Question q1 = new MultipleChoiceQuestion("Soru1", 1, opts1, 0);
-        List<Question> questions = Arrays.asList(q1);
+        Student student = new Student("Test");
 
-        Quiz quiz = new Quiz(questions, student, false, new ArrayList<String>());
+        List<String> opts = Arrays.asList("A", "B", "C", "D");
+        Question q1 = new MultipleChoiceQuestion("S1", 1, opts, 0);
+        Question q2 = new TrueFalseQuestion("S2", 2, true);
+        List<Question> questions = Arrays.asList(q1, q2);
 
-        // Doğru cevap ekleyelim
-        List<String> userAnswers = getUserAnswersList(quiz);
-        userAnswers.add("A");
-        quiz.calculateScore(); // puanı hesapla (10 puan)
+        Quiz quiz = new Quiz(questions, student, false, null);
 
-        // System.out çıktısını yakala
-        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-        java.io.PrintStream oldOut = System.out;
-        System.setOut(new java.io.PrintStream(baos));
+        // Doğru cevaplar → skor 30
+        String fakeInput = "\nA\nevet\n";
 
-        quiz.showResult();
+        InputStream originalIn = System.in;
+        PrintStream originalOut = System.out;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-        System.setOut(oldOut); // System.out'u geri al
+        try {
+            System.setIn(new ByteArrayInputStream(fakeInput.getBytes()));
+            System.setOut(new PrintStream(baos));
+
+            quiz.start();
+            quiz.calculateScore();
+            quiz.showResult();
+
+        } finally {
+            System.setIn(originalIn);
+            System.setOut(originalOut);
+        }
 
         String output = baos.toString();
-        assertTrue(output.contains("Test Öğrencisi"));
-        assertTrue(output.contains("10")); // 10 puan yazmasını bekliyoruz
+
+        assertTrue(output.contains("Test"));
+        assertTrue(output.contains("30"));
     }
 }
-

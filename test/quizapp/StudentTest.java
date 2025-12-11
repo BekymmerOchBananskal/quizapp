@@ -9,7 +9,7 @@ public class StudentTest {
     @Test
     public void studentNameShouldBeSetCorrectly() {
         Student student = new Student("Atılım");
-        assertEquals("Atılım", student.getname(), "Öğrenci adı doğru atanmadı.");
+        assertEquals("Atılım", student.getName(), "Öğrenci adı doğru atanmadı.");
     }
 
     @Test

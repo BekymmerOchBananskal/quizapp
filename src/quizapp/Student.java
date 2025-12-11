@@ -1,7 +1,7 @@
 package quizapp;
 
 /**
- * ğrenciyi temsil eden sınıf.
+ * Öğrenciyi temsil eden sınıf.
  * Öğrencinin adı ve aldığı toplam puan bilgisini taşır.
  */
 public class Student {
@@ -20,7 +20,7 @@ public class Student {
 	 * Öğrencinin adını döndürür.
 	 * @return öğrenci adı
 	 */
-	public String getname() {
+	public String getName() {
 		return name;
 	}
 	

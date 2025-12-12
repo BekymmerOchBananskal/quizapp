@@ -1,8 +1,11 @@
 package quizapp;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -126,4 +129,28 @@ public class Quiz implements Gradable {
         System.out.printf("* Quiz Puanı:  %-45d *%n", student.getScore());
         System.out.println("**************************************************************");
     }
+    public void saveResultToFile() {
+    	String fileName="quizResult.txt";
+    	DateTimeFormatter formatter =
+        DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String dateTime = now.format(formatter);
+    	try (FileWriter writer = new FileWriter(fileName, true)) {
+
+            writer.write("******************** Quiz Sonucu ********************\n");
+            writer.write("Tarih / Saat: " + dateTime + "\n");
+            writer.write("Öğrenci Adı: " + student.getName() + "\n");
+            writer.write("Doğru: " + student.getCorrectCount() + "\n");
+            writer.write("Yanlış: " + student.getWrongCount() + "\n");
+            writer.write("Quiz Puanı: " + student.getScore() + "\n");
+            writer.write("*****************************************************\n\n");
+
+        } catch (IOException e) {
+            System.out.println("Error writing to file!");
+        }
+    }
+			
+    	
+    	
+    
 }

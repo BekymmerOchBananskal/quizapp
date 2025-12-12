@@ -29,6 +29,7 @@ public class Main {
         quiz.start();
         quiz.calculateScore();
         quiz.showResult();
+        quiz.saveResultToFile();
 		
 		
 

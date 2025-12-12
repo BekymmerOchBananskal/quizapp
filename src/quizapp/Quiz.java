@@ -86,8 +86,8 @@ public class Quiz implements Gradable {
 			
 			
 			String answer=input.nextLine();
-			System.out.println("****************************************");
 			userAnswers.add(answer.trim());
+			System.out.println("**************************************************************");
 			number++;
 		}
 	}
@@ -102,7 +102,8 @@ public class Quiz implements Gradable {
 	@Override
 	public int calculateScore() {
 		int score=0;
-		
+		int correct = 0;
+	    int wrong = 0;
 		
 		for(int i=0;i<questions.size();i++) {
 			Question q=questions.get(i);
@@ -110,10 +111,16 @@ public class Quiz implements Gradable {
 			
 			if(q.checkAnswer(answer)) {
 				score+=10*q.getDifficulty();
+				correct++;
+			}
+			else {
+				wrong++;
 			}
 			
 		}
 		student.setScore(score);
+		student.setCorrectCount(correct);
+		student.setWrongCount(wrong);
         return score;
 	}
 	
@@ -123,6 +130,13 @@ public class Quiz implements Gradable {
      * 
      */
 	 public void showResult() {
-		System.out.println("\n"+student.getName()+" adlı öğrencinin toplam puanı: "+student.getScore());
+		 System.out.println("*                      Quiz Sonucu                           *");
+		 System.out.println("**************************************************************");
+		 
+		 System.out.printf("* Öğrenci Adı: %-45s *%n", student.getName());
+		 System.out.printf("* Doğru: %-51d *%n", student.getCorrectCount());
+		 System.out.printf("* Yanlış: %-50d *%n", student.getWrongCount());
+		 System.out.printf("* Quiz Puanı:  %-45d *%n", student.getScore());
+		 System.out.println("**************************************************************");
 	}
 }

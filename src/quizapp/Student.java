@@ -7,6 +7,8 @@ package quizapp;
 public class Student {
 	private String name;
 	private int totalScore;
+	private int correctCount;
+	private int wrongCount;
 	
 	/**
 	 * Öğrenciyi oluşturur.
@@ -22,6 +24,20 @@ public class Student {
 	 */
 	public String getName() {
 		return name;
+	}
+	
+	public int getCorrectCount() {
+		return correctCount;
+	}
+	public void setCorrectCount(int correctCount) {
+		this.correctCount=correctCount;
+	}
+	
+	public int getWrongCount() {
+		return  wrongCount;
+	}
+	public void setWrongCount(int wrongCount) {
+		this.wrongCount=wrongCount;
 	}
 	
 	/**

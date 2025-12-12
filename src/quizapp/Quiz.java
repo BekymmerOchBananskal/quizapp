@@ -29,7 +29,7 @@ public class Quiz implements Gradable {
      *                    (Yapıcı içinde yeni bir liste başlatılır, dışarıdan gelen liste kullanılmaz.)
      */
 	 
-	public Quiz(List<Question>questions,Student student,boolean shuffle,List<String>userAnswers) {
+	public Quiz(List<Question>questions,Student student,boolean shuffle) {
 		this.questions=questions;
 		this.student=student;
 		this.shuffle=shuffle;
@@ -58,7 +58,7 @@ public class Quiz implements Gradable {
 	 */
 	public void start() {
 		Scanner input=new Scanner(System.in);
-		System.out.println(student.getName()+" Hazırsanız ENTER’a basın, quiz başlasın!");
+		System.out.println(student.getName()+" hazırsan ENTER’a bas ve quiz başlasın!");
 		input.nextLine();
 		System.out.println("Quiz başlıyor!\n");
 		int number=1;
@@ -73,17 +73,22 @@ public class Quiz implements Gradable {
 					System.out.println(optionChar+") "+opt);
 					optionChar++;
 				}
+				System.out.println();
 			}
 			if(q instanceof MultipleChoiceQuestion) {
 				System.out.print("Cevabınız(Şıkları yazınız): ");
+				
 			}
 			else {
 				System.out.print("Cevabınız(Evet/Hayır): ");
+				
 			}
 			
 			
 			String answer=input.nextLine();
+			System.out.println("****************************************");
 			userAnswers.add(answer.trim());
+			number++;
 		}
 	}
 	
@@ -97,6 +102,7 @@ public class Quiz implements Gradable {
 	@Override
 	public int calculateScore() {
 		int score=0;
+		
 		
 		for(int i=0;i<questions.size();i++) {
 			Question q=questions.get(i);

@@ -26,7 +26,7 @@ class QuizTest {
         Question q2 = new TrueFalseQuestion("S2", 2, true);           // doğru: evet
         List<Question> questions = Arrays.asList(q1, q2);
 
-        Quiz quiz = new Quiz(questions, student, false, null);
+        Quiz quiz = new Quiz(questions, student, false);
 
         // Sahte kullanıcı girişleri:
         // ENTER → A → evet
@@ -61,7 +61,7 @@ class QuizTest {
         Question q2 = new TrueFalseQuestion("S2", 2, true);           // doğru: evet
         List<Question> questions = Arrays.asList(q1, q2);
 
-        Quiz quiz = new Quiz(questions, student, false, null);
+        Quiz quiz = new Quiz(questions, student, false);
 
         // Sahte giriş:
         // ENTER → B → hayır
@@ -96,7 +96,7 @@ class QuizTest {
         Question q2 = new TrueFalseQuestion("S2", 2, true);
         List<Question> questions = Arrays.asList(q1, q2);
 
-        Quiz quiz = new Quiz(questions, student, false, null);
+        Quiz quiz = new Quiz(questions, student, false);
 
         // Doğru cevaplar → skor 30
         String fakeInput = "\nA\nevet\n";

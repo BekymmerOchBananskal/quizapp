@@ -30,6 +30,7 @@ public class Main {
         quiz.calculateScore();
         quiz.showResult();
         quiz.saveResultToFile();
+        quiz.readResultsFromFile();
 		
 		
 

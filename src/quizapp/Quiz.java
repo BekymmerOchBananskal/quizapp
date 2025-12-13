@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
@@ -129,6 +131,17 @@ public class Quiz implements Gradable {
         System.out.printf("* Quiz Puanı:  %-45d *%n", student.getScore());
         System.out.println("**************************************************************");
     }
+    /**
+     * Quiz sonucunu metin (txt) dosyasına kaydeder.
+ 	 * Bu metot, öğrencinin quiz sonunda elde ettiği bilgileri
+ 	 * (öğrenci adı, doğru/yanlış sayısı, toplam puan)
+ 	 * geçerli tarih ve saat bilgisi ile birlikte
+ 	 * Dosya yazma işlemi sırasında:
+     * Dosya mevcutsa, önceki sonuçlar silinmeden yeni sonuçlar dosyanın sonuna eklenir.
+     * Dosya mevcut değilse, otomatik olarak oluşturulur.
+     * Dosyaya yazma sırasında bir hata oluşursa,
+     * hata bilgisi konsola yazdırılır.
+     */
     public void saveResultToFile() {
     	String fileName="quizResult.txt";
     	DateTimeFormatter formatter =
@@ -149,6 +162,33 @@ public class Quiz implements Gradable {
             System.out.println("Error writing to file!");
         }
     }
+    /**
+     * Kaydedilmiş quiz sonuçlarını dosyadan okur ve konsola yazdırır.
+     */
+    public void readResultsFromFile() {
+        String fileName = "quizResult.txt";
+
+        try {
+            File file = new File(fileName);
+            Scanner fileScanner = new Scanner(file);
+
+            System.out.println("\n======= KAYDEDİLMİŞ QUIZ SONUÇLARI =======");
+
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine();
+                System.out.println(line);
+            }
+
+            System.out.println("=====================================");
+
+            fileScanner.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Dosya bulunamadı!");
+        }
+    }
+
+    
 			
     	
     	

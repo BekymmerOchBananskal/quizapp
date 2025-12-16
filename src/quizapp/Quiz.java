@@ -22,6 +22,8 @@ public class Quiz implements Gradable {
     private Student student;
     private boolean shuffle;
     private List<String> userAnswers;
+    
+    
 
     public Quiz(List<Question> questions, Student student, boolean shuffle) {
         this.questions = questions;
@@ -39,8 +41,8 @@ public class Quiz implements Gradable {
      * Quiz oturumunu başlatır 
      * Süre kontrolü her sorudan önce yapılır.
      */
-    public void start() {
-        Scanner input = new Scanner(System.in);
+    public void start(Scanner input) {
+        
 
         System.out.println(student.getName() + " hazırsan ENTER’a bas ve quiz başlasın!");
         input.nextLine();
@@ -165,7 +167,7 @@ public class Quiz implements Gradable {
     /**
      * Kaydedilmiş quiz sonuçlarını dosyadan okur ve konsola yazdırır.
      */
-    public void readResultsFromFile() {
+    public static void readResultsFromFile() {
         String fileName = "quizResult.txt";
 
         try {

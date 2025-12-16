@@ -8,71 +8,64 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 import org.junit.jupiter.api.Test;
 
 class QuizTest {
 
-    // -------------------------------------------------------------
-    // 1) TÜM CEVAPLAR DOĞRU → Skor 30 olmalı
-    // -------------------------------------------------------------
     @Test
     void testCalculateScore_allCorrect() {
 
         Student student = new Student("Test");
 
         List<String> opts = Arrays.asList("A", "B", "C", "D");
-        Question q1 = new MultipleChoiceQuestion("S1", 1, opts, 0);   // doğru: A
-        Question q2 = new TrueFalseQuestion("S2", 2, true);           // doğru: evet
+        Question q1 = new MultipleChoiceQuestion("S1", 1, opts, 0); // doğru: A
+        Question q2 = new TrueFalseQuestion("S2", 2, true);         // doğru: evet
         List<Question> questions = Arrays.asList(q1, q2);
 
         Quiz quiz = new Quiz(questions, student, false);
 
-        // Sahte kullanıcı girişleri:
-        // ENTER → A → evet
         String fakeInput = "\nA\nevet\n";
-
         InputStream originalIn = System.in;
 
         try {
             System.setIn(new ByteArrayInputStream(fakeInput.getBytes()));
 
-            quiz.start();                // Cevapları userAnswers'a doldurur
+            Scanner scanner = new Scanner(System.in);
+            quiz.start(scanner);           // <-- değişti
             int score = quiz.calculateScore();
 
             assertEquals(30, score);
             assertEquals(30, student.getScore());
+
+            // scanner.close();  // İstersen kapat, ama System.in kullandığı için genelde kapatılmıyor.
 
         } finally {
             System.setIn(originalIn);
         }
     }
 
-    // -------------------------------------------------------------
-    // 2) TÜM CEVAPLAR YANLIŞ → Skor 0 olmalı
-    // -------------------------------------------------------------
     @Test
     void testCalculateScore_allWrong() {
 
         Student student = new Student("Test");
 
         List<String> opts = Arrays.asList("A", "B", "C", "D");
-        Question q1 = new MultipleChoiceQuestion("S1", 1, opts, 0);   // doğru: A
-        Question q2 = new TrueFalseQuestion("S2", 2, true);           // doğru: evet
+        Question q1 = new MultipleChoiceQuestion("S1", 1, opts, 0);
+        Question q2 = new TrueFalseQuestion("S2", 2, true);
         List<Question> questions = Arrays.asList(q1, q2);
 
         Quiz quiz = new Quiz(questions, student, false);
 
-        // Sahte giriş:
-        // ENTER → B → hayır
         String fakeInput = "\nB\nhayır\n";
-
         InputStream originalIn = System.in;
 
         try {
             System.setIn(new ByteArrayInputStream(fakeInput.getBytes()));
 
-            quiz.start();
+            Scanner scanner = new Scanner(System.in);
+            quiz.start(scanner);           // <-- değişti
             int score = quiz.calculateScore();
 
             assertEquals(0, score);
@@ -83,9 +76,6 @@ class QuizTest {
         }
     }
 
-    // -------------------------------------------------------------
-    // 3) showResult çıktısı doğru mu?
-    // -------------------------------------------------------------
     @Test
     void testShowResult_printsCorrectMessage() {
 
@@ -98,7 +88,6 @@ class QuizTest {
 
         Quiz quiz = new Quiz(questions, student, false);
 
-        // Doğru cevaplar → skor 30
         String fakeInput = "\nA\nevet\n";
 
         InputStream originalIn = System.in;
@@ -109,7 +98,8 @@ class QuizTest {
             System.setIn(new ByteArrayInputStream(fakeInput.getBytes()));
             System.setOut(new PrintStream(baos));
 
-            quiz.start();
+            Scanner scanner = new Scanner(System.in);
+            quiz.start(scanner);           // <-- değişti
             quiz.calculateScore();
             quiz.showResult();
 

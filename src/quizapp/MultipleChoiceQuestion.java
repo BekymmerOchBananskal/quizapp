@@ -44,6 +44,9 @@ public class MultipleChoiceQuestion extends Question {
 	@Override
 	public boolean checkAnswer(String answer) {
 		try {
+			if (answer == null) return false;
+			answer = answer.trim().toUpperCase();
+
 			// Kullanıcı harf girer(A,B,C,D)
 			int choice=-1;
 			answer=answer.trim().toUpperCase();

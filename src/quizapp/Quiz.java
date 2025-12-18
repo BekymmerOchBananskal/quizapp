@@ -32,7 +32,7 @@ public class Quiz implements Gradable {
         this.userAnswers = new ArrayList<>();
         
 
-        if (shuffle) {
+        if (this.shuffle) {
             Collections.shuffle(this.questions);
         }
     }
@@ -48,8 +48,8 @@ public class Quiz implements Gradable {
         input.nextLine();
         System.out.println("Quiz başlıyor!\n");
 
-        // 60 saniye
-        long timeLimitMillis = 60000;
+        // 180 saniye
+        long timeLimitMillis = 180000;
         long startTime = System.currentTimeMillis();
         long endTime = startTime + timeLimitMillis;
 
@@ -126,12 +126,12 @@ public class Quiz implements Gradable {
      */
     public void showResult() {
         System.out.println("*                      Quiz Sonucu                           *");
-        System.out.println("**************************************************************");
+        System.out.println("**************************************************************************");
         System.out.printf("* Öğrenci Adı: %-45s *%n", student.getName());
         System.out.printf("* Doğru: %-51d *%n", student.getCorrectCount());
         System.out.printf("* Yanlış: %-50d *%n", student.getWrongCount());
         System.out.printf("* Quiz Puanı:  %-45d *%n", student.getScore());
-        System.out.println("**************************************************************");
+        System.out.println("**************************************************************************");
     }
     /**
      * Quiz sonucunu metin (txt) dosyasına kaydeder.
@@ -152,13 +152,13 @@ public class Quiz implements Gradable {
         String dateTime = now.format(formatter);
     	try (FileWriter writer = new FileWriter(fileName, true)) {
 
-            writer.write("******************** Quiz Sonucu ********************\n");
+            writer.write("***************************************** Quiz Sonucu *****************************************\n");
             writer.write("Tarih / Saat: " + dateTime + "\n");
             writer.write("Öğrenci Adı: " + student.getName() + "\n");
             writer.write("Doğru: " + student.getCorrectCount() + "\n");
             writer.write("Yanlış: " + student.getWrongCount() + "\n");
             writer.write("Quiz Puanı: " + student.getScore() + "\n");
-            writer.write("*****************************************************\n\n");
+            writer.write("***********************************************************************************************\n\n");
 
         } catch (IOException e) {
             System.out.println("Error writing to file!");
@@ -174,14 +174,14 @@ public class Quiz implements Gradable {
             File file = new File(fileName);
             Scanner fileScanner = new Scanner(file);
 
-            System.out.println("\n======= KAYDEDİLMİŞ QUIZ SONUÇLARI =======");
+            System.out.println("\n ================ KAYDEDİLMİŞ QUIZ SONUÇLARI ================");
 
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
                 System.out.println(line);
             }
 
-            System.out.println("=====================================");
+            System.out.println("====================================================================");
 
             fileScanner.close();
 

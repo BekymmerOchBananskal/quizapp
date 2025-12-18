@@ -15,7 +15,8 @@ public class Main {
         while (true) {
 
             int choice;
-            System.out.println("**********************MENÜ**********************");
+            System.out.println("********************************1"
+            		+ "MENÜ********************************");
             System.out.print("1-)Quiz Başlat('1' e bas)\n2-)Quiz Sonuçları('2' ye bas)\n3-)Programdan Çıkış('3' e bas)\n");
 
             System.out.print("Seçiminiz: ");
@@ -29,7 +30,7 @@ public class Main {
 
                 Student student = new Student(name);
 
-                // ✅ Soruları dosyadan oku
+                // Soruları dosyadan oku
                 List<Question> questions = loadQuestionsFromFile("questions.txt");
 
                 if (questions.isEmpty()) {

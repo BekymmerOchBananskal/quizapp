@@ -24,9 +24,17 @@ public class TrueFalseQuestion extends Question{
 	 */
 	@Override
 	public boolean checkAnswer(String answer) {
+		if (answer == null) {
+			return false;
+		}
 		answer=answer.trim().toLowerCase();
-		boolean user=answer.equals("evet");
-		return user==correctAnswer;
+		if (answer.equals("evet") || answer.equals("true")) {
+	        return correctAnswer == true;
+	    }
+	    if (answer.equals("hayır") || answer.equals("hayir") || answer.equals("false")) {
+	        return correctAnswer == false;
+	    }
+	    return false; // geçersiz giriş
 	}
 	
 }

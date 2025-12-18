@@ -39,5 +39,5 @@ public abstract class Question {
 	 * @param answer kullanıcının girdiği cevap.
 	 * @return doğruysa true,yanlışsa false döndürür.
 	 */
-	public abstract boolean checkAnswer(String Answer);
+	public abstract boolean checkAnswer(String answer);
 }

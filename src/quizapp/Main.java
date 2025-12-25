@@ -14,19 +14,47 @@ public class Main {
 
         while (true) {
 
-            int choice;
-            System.out.println("********************************1"
-            		+ "MENÜ********************************");
-            System.out.print("1-)Quiz Başlat('1' e bas)\n2-)Quiz Sonuçları('2' ye bas)\n3-)Programdan Çıkış('3' e bas)\n");
+            int choice = -1;
 
-            System.out.print("Seçiminiz: ");
-            choice = input.nextInt();
-            input.nextLine();
+            // Menü seçimi güvenli şekilde alınır
+            while (true) {
+                System.out.println("********************************MENÜ********************************");
+                System.out.print(
+                        "1-)Quiz Başlat('1' e bas)\n" +
+                        "2-)Quiz Sonuçları('2' ye bas)\n" +
+                        "3-)Programdan Çıkış('3' e bas)\n" +
+                        "********************************************************************\n"
+                );
+
+                System.out.print("Seçiminiz: ");
+
+                if (!input.hasNextInt()) {
+                    System.out.println("Lütfen sadece sayı giriniz!");
+                    input.nextLine(); // hatalı girdiyi temizle
+                    continue;
+                }
+
+                choice = input.nextInt();
+                input.nextLine(); // enter temizle
+
+                if (choice < 1 || choice > 3) {
+                    System.out.println("Geçersiz seçim! 1 ile 3 arasında bir değer giriniz.");
+                    continue;
+                }
+
+                break; // geçerli seçim
+            }
 
             if (choice == 1) {
 
+                // İsim boş girilirse tekrar sor
                 System.out.print("İsminizi giriniz: ");
                 String name = input.nextLine();
+
+                while (name.trim().isEmpty()) {
+                    System.out.print("Lütfen geçerli bir isim giriniz: ");
+                    name = input.nextLine();
+                }
 
                 Student student = new Student(name);
 
@@ -46,9 +74,11 @@ public class Main {
                 quiz.saveResultToFile();
 
             } else if (choice == 2) {
+
                 Quiz.readResultsFromFile();
 
             } else if (choice == 3) {
+
                 System.out.print("Çıkış Yapıldı...");
                 break;
             }
